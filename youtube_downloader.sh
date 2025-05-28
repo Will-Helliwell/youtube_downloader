@@ -22,8 +22,12 @@ ffmpeg -i "$thumbnail_file" "$temp_dir/artwork.jpg"
 downloaded_file=$(ls -t "$temp_dir/temp_"* | head -n1)
 
 # Add metadata and artwork, then rename the file
-ffmpeg -i "$downloaded_file" -i "$temp_dir/artwork.jpg" -map 0:0 -map 1:0 -metadata artist="$artist" -metadata title="$song" -codec copy "$HOME/Documents/songs/${artist} - ${song}.mp3"
+output_file="$HOME/Documents/songs/${artist} - ${song}.mp3"
+ffmpeg -i "$downloaded_file" -i "$temp_dir/artwork.jpg" -map 0:0 -map 1:0 -metadata artist="$artist" -metadata title="$song" -codec copy "$output_file"
 
 # Clean up temporary files
 rm -rf "$temp_dir"
+
+# Open the file in Apple Music
+open -a Music "$output_file"
 
